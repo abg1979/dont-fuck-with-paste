@@ -1,10 +1,4 @@
-const DFWP = {};
-
-try {
-  DFWP.browser = browser;
-} catch {
-  DFWP.browser = chrome;
-}
+const DFWP = { browser };
 
 if (DFWP.browser.storage.sync) {
   DFWP.storage = DFWP.browser.storage.sync;

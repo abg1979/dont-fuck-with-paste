@@ -5,10 +5,13 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 ### Added
 - Add reproducible Firefox linting and distribution builds with Gulp, `web-ext`, Yarn, and GitHub Actions
-- Add automated unit and Chrome/Firefox browser coverage for copy, cut, paste, frames, navigation, and activation state
+- Add automated unit and Firefox browser coverage for copy, cut, paste, frames, navigation, and activation state
 
 ### Changed
-- Support Firefox alongside Chrome with a Manifest V3 background-script fallback and Firefox-specific metadata
+- Make Firefox the sole supported browser and remove Chrome-specific runtime, build, and test paths
+- Use Firefox Promise-based extension APIs in the popup and options page
+- Open extension options in a dedicated Firefox tab
+- Point the extension homepage metadata to the current repository
 - Resolve the Firefox extension API from the content-script global
 - Install event interception at document start so early page handlers cannot cancel clipboard events first
 - Make activation wait for stored rules and follow the originating tab across navigation and background restarts
@@ -79,7 +82,7 @@ All notable changes to this project will be documented in this file.
 - This CHANGELOG file
 - Copy event blocking prevention
 
-[Unreleased]: https://github.com/jswanner/DontF-WithPaste/compare/v3.1...HEAD
+[Unreleased]: https://github.com/abg1979/dont-fuck-with-paste/compare/v3.1...HEAD
 [3.1]: https://github.com/jswanner/DontF-WithPaste/compare/v3.0...v3.1
 [3.0]: https://github.com/jswanner/DontF-WithPaste/compare/v2.9...v3.0
 [2.9]: https://github.com/jswanner/DontF-WithPaste/compare/v2.8...v2.9

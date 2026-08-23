@@ -3,10 +3,11 @@
   "version": "3.1.0",
   "private": true,
   "packageManager": "yarn@4.12.0",
-  "description": "Prevents websites from blocking copy, cut, and paste events",
+  "description": "Firefox extension that prevents websites from blocking copy, cut, and paste events",
   "license": "MIT",
   "scripts": {
-    "start": "web-ext run",
+    "start": "yarn start:firefox",
+    "start:firefox": "web-ext run --target firefox-desktop",
     "lint": "web-ext lint",
     "test": "yarn test:unit && yarn test:browser",
     "test:unit": "node --test test/unit.test.mjs test/harness.test.mjs",

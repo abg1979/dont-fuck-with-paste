@@ -4,8 +4,6 @@ import path from 'node:path';
 import { after, test } from 'node:test';
 import {
   ARTIFACT_ROOT,
-  CHROME_TEST_KEY,
-  chromeExtensionId,
   createExtensionStage,
   createStoredZip,
   removeArtifacts,
@@ -29,17 +27,8 @@ test('fixture server exposes deterministic blocker pages without caching', async
   }
 });
 
-test('Chrome staging pins the expected extension id without changing source', async () => {
-  const stage = await createExtensionStage('chrome');
-  const manifest = JSON.parse(
-    await readFile(path.join(stage, 'manifest.json'), 'utf8'),
-  );
-  assert.equal(manifest.key, CHROME_TEST_KEY);
-  assert.equal(chromeExtensionId(), 'mabjlkkcenppomhcdccgeciocjlaoohl');
-});
-
 test('Firefox staging can be packaged as an installable ZIP container', async () => {
-  const stage = await createExtensionStage('firefox');
+  const stage = await createExtensionStage();
   const output = path.join(ARTIFACT_ROOT, 'extension.xpi');
   await createStoredZip(stage, output);
   const archive = await readFile(output);

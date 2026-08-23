@@ -1,10 +1,4 @@
-let runtime;
-
-try {
-  runtime = browser.runtime;
-} catch {
-  runtime = chrome.runtime;
-}
+const { runtime } = browser;
 
 const forceBrowserDefault = function(e){
   if (active) {

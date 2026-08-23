@@ -1,4 +1,3 @@
-import { createHash } from 'node:crypto';
 import { constants } from 'node:fs';
 import {
   access,
@@ -17,11 +16,6 @@ const TEST_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..
 export const REPOSITORY_ROOT = path.resolve(TEST_ROOT, '..');
 export const ARTIFACT_ROOT = path.join(TEST_ROOT, '.artifacts', String(process.pid));
 
-export const CHROME_TEST_KEY =
-  'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDXcqKcduUhIt72A9srDKckTDFkXSn06TattHqnxkhGSHwn3PxrsL2KH3GqQD8VMb53zxtkrtpgGo83XmcmisOslpezK0RlcyOvoIVAunbLWrKWorFJ/gZOy+GuQOSWNFUCK+Xmxjzx6STb0xsDNTNeTPTvPdY2Rnwgo2WYsuysTwIDAQAB';
-export const FIREFOX_EXTENSION_ID = 'DontFuckWithPaste@raim.ist';
-export const FIREFOX_EXTENSION_UUID = '36fd9538-3a23-48c6-b30a-a9c5792d80b3';
-
 const TEST_BRIDGE = `
 document.addEventListener('__dfwp_test_storage_request', () => {
   const root = document.documentElement;
@@ -34,13 +28,41 @@ document.addEventListener('__dfwp_test_storage_request', () => {
     document.dispatchEvent(new Event('__dfwp_test_storage_response'));
   };
 
-  chrome.storage.sync.set({ rules: request.rules }, () => {
-    if (chrome.runtime.lastError) {
-      respond({ error: chrome.runtime.lastError.message });
-      return;
-    }
-    chrome.storage.sync.get({ rules: [] }, ({ rules }) => respond({ rules }));
-  });
+  browser.runtime.sendMessage({ __dfwpTest: true, ...request })
+    .then(respond)
+    .catch((error) => respond({ error: error.message }));
+});
+`;
+
+const TEST_BACKGROUND = `
+browser.runtime.onMessage.addListener((request) => {
+  if (!request.__dfwpTest) return undefined;
+
+  const actions = {
+    async setRules() {
+      await browser.storage.sync.set({ rules: request.rules });
+      const { rules } = await browser.storage.sync.get({ rules: [] });
+      return { rules };
+    },
+    async getActionStates() {
+      const tabs = await browser.tabs.query({});
+      return {
+        actionStates: await Promise.all(tabs.map(async (tab) => ({
+          url: tab.url,
+          title: await browser.action.getTitle({ tabId: tab.id }),
+        }))),
+      };
+    },
+    async openOptions() {
+      await browser.runtime.openOptionsPage();
+      return { opened: true };
+    },
+  };
+
+  const action = actions[request.action || 'setRules'];
+  return action ? action() : Promise.reject(
+    new Error(\`Unknown test bridge action: \${request.action}\`),
+  );
 });
 `;
 
@@ -66,22 +88,10 @@ const EXTENSION_FILES = [
   'styles.css',
 ];
 
-export function chromeExtensionId(key = CHROME_TEST_KEY) {
-  const digest = createHash('sha256')
-    .update(Buffer.from(key, 'base64'))
-    .digest()
-    .subarray(0, 16);
-
-  return [...digest]
-    .flatMap((byte) => [byte >> 4, byte & 0x0f])
-    .map((nibble) => String.fromCharCode('a'.charCodeAt(0) + nibble))
-    .join('');
-}
-
-export async function createExtensionStage(browserName) {
+export async function createExtensionStage() {
   const stage = path.join(
     ARTIFACT_ROOT,
-    `${browserName}-${Date.now()}`,
+    `firefox-${Date.now()}`,
   );
   await mkdir(stage, { recursive: true });
 
@@ -95,10 +105,12 @@ export async function createExtensionStage(browserName) {
   const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
   manifest.content_scripts[0].js.push('test-storage-bridge.js');
   await writeFile(path.join(stage, 'test-storage-bridge.js'), TEST_BRIDGE);
+  await writeFile(path.join(stage, 'test-background.mjs'), TEST_BACKGROUND);
+  await writeFile(
+    path.join(stage, 'background.js'),
+    `${await readFile(path.join(stage, 'background.js'), 'utf8')}\nimport './test-background.mjs';\n`,
+  );
 
-  if (browserName === 'chrome') {
-    manifest.key = CHROME_TEST_KEY;
-  }
   await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
 
   return stage;

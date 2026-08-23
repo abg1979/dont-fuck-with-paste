@@ -23,11 +23,9 @@ function configuredPattern() {
   return `^${server.origin.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:/configured\\.html|/navigation/configured\\.html)$`;
 }
 
-async function setRules(environment, rules) {
-  await environment.driver.get(server.url('/unconfigured.html'));
-  await waitForFixture(environment);
-  const response = await environment.driver.executeAsyncScript(`
-    const rules = arguments[0];
+async function extensionRequest(environment, request) {
+  return environment.driver.executeAsyncScript(`
+    const request = arguments[0];
     const done = arguments[arguments.length - 1];
     const requestId = crypto.randomUUID();
     const root = document.documentElement;
@@ -45,10 +43,19 @@ async function setRules(environment, rules) {
     document.addEventListener('__dfwp_test_storage_response', receive);
     root.setAttribute(
       'data-dfwp-test-request',
-      JSON.stringify({ requestId, rules }),
+      JSON.stringify({ requestId, ...request }),
     );
     document.dispatchEvent(new Event('__dfwp_test_storage_request'));
-  `, rules);
+  `, request);
+}
+
+async function setRules(environment, rules) {
+  await environment.driver.get(server.url('/unconfigured.html'));
+  await waitForFixture(environment);
+  const response = await extensionRequest(environment, {
+    action: 'setRules',
+    rules,
+  });
   assert.equal(response.error, undefined, `storage update failed: ${response.error}`);
   assert.deepEqual(response.rules, rules);
 }
@@ -219,32 +226,19 @@ for (const browserName of selectedBrowsers()) {
         await current.driver.switchTo().window(configuredWindow);
         await waitForCancellationState(current, 'paste', 'listener', false);
 
-        if (current.canOpenExtensionPages) {
-          await current.driver.switchTo().newWindow('tab');
-          await current.driver.get(current.extensionOptionsUrl);
-          const actionStates = await current.driver.executeAsyncScript(`
-            const done = arguments[arguments.length - 1];
-            chrome.tabs.query({}, async (tabs) => {
-              const fixtureTabs = tabs.filter((tab) =>
-                tab.url.startsWith(${JSON.stringify(server.origin)})
-              );
-              done(await Promise.all(fixtureTabs.map(async (tab) => ({
-                url: tab.url,
-                title: await chrome.action.getTitle({ tabId: tab.id }),
-              }))));
-            });
-          `);
-          assert.deepEqual(
-            actionStates
-              .map(({ url, title }) => [new URL(url).pathname, title])
-              .sort(([left], [right]) => left.localeCompare(right)),
-            [
-              ['/configured.html', "Don't F*** With Paste (active)"],
-              ['/unconfigured.html', "Don't F*** With Paste (inactive)"],
-            ],
-          );
-          await current.driver.close();
-        }
+        const { actionStates } = await extensionRequest(current, {
+          action: 'getActionStates',
+        });
+        assert.deepEqual(
+          actionStates
+            .filter(({ url }) => url.startsWith(server.origin))
+            .map(({ url, title }) => [new URL(url).pathname, title])
+            .sort(([left], [right]) => left.localeCompare(right)),
+          [
+            ['/configured.html', "Don't F*** With Paste (active)"],
+            ['/unconfigured.html', "Don't F*** With Paste (inactive)"],
+          ],
+        );
       } finally {
         await current.driver.switchTo().window(unconfiguredWindow);
         await current.driver.close();
@@ -267,27 +261,32 @@ for (const browserName of selectedBrowsers()) {
       );
       assert.equal(result.siteHitCount, 0, 'valid rules still activate the page');
 
-      if (current.canOpenExtensionPages) {
-        await current.driver.get(current.extensionOptionsUrl);
-        const invalidInput = await current.driver.wait(async () => {
-          const inputs = await current.driver.findElements(
-            current.selenium.By.css('.input'),
-          );
-          for (const input of inputs) {
-            if (await input.getAttribute('value') === '[') {
-              return input;
-            }
-          }
-          return false;
-        }, defaultTimeout, 'invalid stored rule was not rendered');
-
-        assert.equal(await invalidInput.getAttribute('aria-invalid'), 'true');
-        const validationMessage = await current.driver.executeScript(
-          'return arguments[0].validationMessage',
-          invalidInput,
+      const handlesBefore = new Set(await current.driver.getAllWindowHandles());
+      const response = await extensionRequest(current, { action: 'openOptions' });
+      assert.equal(response.opened, true);
+      const optionsWindow = await current.driver.wait(async () => {
+        const handles = await current.driver.getAllWindowHandles();
+        return handles.find((handle) => !handlesBefore.has(handle)) || false;
+      }, defaultTimeout, 'options page did not open');
+      await current.driver.switchTo().window(optionsWindow);
+      const invalidInput = await current.driver.wait(async () => {
+        const inputs = await current.driver.findElements(
+          current.selenium.By.css('.input'),
         );
-        assert.match(validationMessage, /invalid regular expression/i);
-      }
+        for (const input of inputs) {
+          if (await input.getAttribute('value') === '[') {
+            return input;
+          }
+        }
+        return false;
+      }, defaultTimeout, 'invalid stored rule was not rendered');
+
+      assert.equal(await invalidInput.getAttribute('aria-invalid'), 'true');
+      const validationMessage = await current.driver.executeScript(
+        'return arguments[0].validationMessage',
+        invalidInput,
+      );
+      assert.match(validationMessage, /invalid regular expression/i);
     });
   });
 }

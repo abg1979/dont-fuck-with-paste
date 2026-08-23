@@ -3,15 +3,14 @@ const { browser, storage } = DFWP;
 
 let rules = new Rules();
 
-function displayRules(container) {
+async function displayRules(container) {
   while (container.firstChild) {
     container.removeChild(container.firstChild);
   }
 
-  storage.get({ rules: [] }, ({ rules: values }) => {
-    rules = Rules.deserialize(values);
-    rules.forEach((rule) => new RuleView(rule, rules).render(container));
-  });
+  const { rules: values } = await storage.get({ rules: [] });
+  rules = Rules.deserialize(values);
+  rules.forEach((rule) => new RuleView(rule, rules).render(container));
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -29,9 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
     new RuleView(rule, rules).render(container);
   });
 
-  browser.storage.onChanged.addListener(() => {
-    displayRules(container);
+  browser.storage.onChanged.addListener((changes) => {
+    if (changes.rules) {
+      displayRules(container);
+    }
   });
 
-  displayRules(container);
+  displayRules(container).catch((error) => {
+    console.error('Failed to display rules', error);
+  });
 });

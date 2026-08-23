@@ -5,7 +5,6 @@
   },
   "background": {
     "scripts": [ "background.js" ],
-    "service_worker": "background.js",
     "type": "module"
   },
   "content_scripts": [
@@ -17,7 +16,7 @@
     }
   ],
   "description": "Prevents the blocking of copying from & pasting into input fields",
-  "homepage_url": "https://github.com/jswanner/DontF-WithPaste",
+  "homepage_url": "https://github.com/abg1979/dont-fuck-with-paste",
   "icons": {
     "48": "clipboard-inactive-48.png",
     "128": "clipboard-inactive-128.png"
@@ -25,7 +24,8 @@
   "manifest_version": 3,
   "name": "Don't F*** With Paste",
   "options_ui": {
-    "page": "options.html"
+    "page": "options.html",
+    "open_in_tab": true
   },
   "permissions": [
     "storage",
