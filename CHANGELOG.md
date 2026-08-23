@@ -3,6 +3,8 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+## [3.1.1] - 2026-08-23
 ### Added
 - Add reproducible Firefox linting and distribution builds with Gulp, `web-ext`, Yarn, and GitHub Actions
 - Add automated unit and Firefox browser coverage for copy, cut, paste, frames, navigation, and activation state
@@ -82,7 +84,8 @@ All notable changes to this project will be documented in this file.
 - This CHANGELOG file
 - Copy event blocking prevention
 
-[Unreleased]: https://github.com/abg1979/dont-fuck-with-paste/compare/v3.1...HEAD
+[Unreleased]: https://github.com/abg1979/dont-fuck-with-paste/compare/v3.1.1...HEAD
+[3.1.1]: https://github.com/abg1979/dont-fuck-with-paste/compare/v3.1...v3.1.1
 [3.1]: https://github.com/jswanner/DontF-WithPaste/compare/v3.0...v3.1
 [3.0]: https://github.com/jswanner/DontF-WithPaste/compare/v2.9...v3.0
 [2.9]: https://github.com/jswanner/DontF-WithPaste/compare/v2.8...v2.9
