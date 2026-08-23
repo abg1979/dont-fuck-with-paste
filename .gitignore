@@ -1,5 +1,6 @@
 web-ext-artifacts/
 dist/
+test/.artifacts/
 node_modules/
 .yarn/
 .pnp.*

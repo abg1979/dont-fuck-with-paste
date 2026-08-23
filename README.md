@@ -13,16 +13,18 @@ paste into a text box.
 
 ## Solution
 
-This is a dead simple Google Chrome extension that removes copy, cut and paste
-blocking, by preventing sites from interfering with "copy", "cut", and "paste"
-browser events.
+This is a dead simple Chrome and Firefox extension that removes copy, cut and
+paste blocking by preventing sites from canceling "copy", "cut", and "paste"
+browser events. The extension installs its event guards before page scripts and
+only enables them on sites matching a configured pattern.
 
 This extension does not try to prevent a site from also interfering with
 keyboard shortcuts related to those browser actions (control-v, command-v,
 etc.), nor does this extension prevent sites from interfering with the
 "contextmenu" event (right click menu). For those super annoying sites that
 interfere with keyboard shortcuts and context menu, using Edit -> Paste from
-the browser's menu might be required.
+the browser's menu might be required. Browser or operating-system clipboard
+policies are also outside the extension's control.
 
 ## Usage
 
@@ -37,6 +39,10 @@ example](https://raw.githubusercontent.com/jswanner/DontF-WithPaste/73e5d11eba02
 After that, the extension icon should now be blue, meaning the extension is
 active for your current tab: ![active
 icon](https://raw.githubusercontent.com/jswanner/DontF-WithPaste/73e5d11eba02213ae28ac0ced28f54a1d1af6a09/clipboard-active-32.png)
+
+Patterns are JavaScript regular expressions. Invalid expressions are marked in
+the popup or options page and must be corrected or removed before they can be
+saved.
 
 ## Version 2 Upgrade
 

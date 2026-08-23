@@ -8,12 +8,16 @@
   "scripts": {
     "start": "web-ext run",
     "lint": "web-ext lint",
+    "test": "yarn test:unit && yarn test:browser",
+    "test:unit": "node --test test/unit.test.mjs test/harness.test.mjs",
+    "test:browser": "node --test test/browser-regression.test.mjs",
     "clean": "gulp clean",
     "build": "gulp dist"
   },
   "devDependencies": {
     "gulp": "^5.0.1",
     "gulp-zip": "^6.0.0",
+    "selenium-webdriver": "^4.47.0",
     "web-ext": "^9.3.0"
   }
 }

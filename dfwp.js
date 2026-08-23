@@ -14,48 +14,7 @@ if (DFWP.browser.storage.sync) {
 
 export default DFWP;
 
-export class Rule {
-  constructor(value) {
-    this.value = value || '';
-  }
-
-  get pattern() {
-    return new RegExp(this.value || '(?=a)b');
-  }
-
-  test(string) {
-    return this.pattern.test(string);
-  }
-}
-
-export class Rules extends Set {
-  static get [Symbol.species]() { return Set; }
-
-  static deserialize(values) {
-    const rules = values.map((v) => new Rule(v));
-    return new Rules(rules);
-  }
-
-  get array() {
-    return Array.from(this);
-  }
-
-  filter(cb) {
-    return this.array.filter(cb);
-  }
-
-  find(cb) {
-    return this.array.find(cb);
-  }
-
-  serialize() {
-    return this.array.map(r => r.value).filter(v => v.length);
-  }
-
-  some(cb) {
-    return this.array.some(cb);
-  }
-}
+export { Rule, Rules } from './rules.mjs';
 
 export class RuleView {
   constructor(rule, rules) {
@@ -70,12 +29,14 @@ export class RuleView {
 
   oninput(event) {
     this.rule.value = event.target.value;
+    this.validate(event.target);
   }
 
   render(container, templateSelector = '#template') {
     const clone = document.importNode(this.template(templateSelector).content, true);
     const input = clone.querySelector('.input');
     input.value = this.rule.value;
+    this.validate(input);
     input.addEventListener('input', this.oninput.bind(this));
 
     const button = clone.querySelector('.delete');
@@ -88,5 +49,17 @@ export class RuleView {
 
   template(templateSelector) {
     return document.querySelector(templateSelector);
+  }
+
+  validate(input) {
+    const error = this.rule.error;
+    const message = error ? `Invalid regular expression: ${error.message}` : '';
+    input.setCustomValidity(message);
+    input.title = message;
+    if (error) {
+      input.setAttribute('aria-invalid', 'true');
+    } else {
+      input.removeAttribute('aria-invalid');
+    }
   }
 }

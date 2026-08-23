@@ -18,9 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.querySelector('.container');
   const form = document.querySelector('.form');
 
-  form.addEventListener('submit', (event) => {
+  form.addEventListener('submit', async (event) => {
     event.preventDefault();
-    storage.set({ rules: rules.serialize() });
+    await storage.set({ rules: rules.serialize() });
   });
 
   document.querySelector('.add').addEventListener('click', () => {

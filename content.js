@@ -7,20 +7,29 @@ try {
 }
 
 const forceBrowserDefault = function(e){
-  e.stopImmediatePropagation();
+  if (active) {
+    e.stopImmediatePropagation();
+  }
+
   return true;
 };
 
-runtime.onMessage.addListener(({ active }) => {
-  if (active) {
-    document.addEventListener('copy', forceBrowserDefault, true);
-    document.addEventListener('cut', forceBrowserDefault, true);
-    document.addEventListener('paste', forceBrowserDefault, true);
-  } else {
-    document.removeEventListener('copy', forceBrowserDefault, true);
-    document.removeEventListener('cut', forceBrowserDefault, true);
-    document.removeEventListener('paste', forceBrowserDefault, true);
-  }
+let active = false;
+
+window.addEventListener('copy', forceBrowserDefault, true);
+window.addEventListener('cut', forceBrowserDefault, true);
+window.addEventListener('paste', forceBrowserDefault, true);
+
+runtime.onMessage.addListener((message) => {
+  active = Boolean(message.active);
 });
 
-runtime.sendMessage({ didLoad: true });
+runtime.sendMessage({ didLoad: true })
+  .then((initialState) => {
+    if (typeof initialState === 'boolean') {
+      active = initialState;
+    }
+  })
+  .catch((error) => {
+    console.error('Failed to request activation state', error);
+  });

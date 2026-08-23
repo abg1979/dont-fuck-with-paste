@@ -5,10 +5,15 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 ### Added
 - Add reproducible Firefox linting and distribution builds with Gulp, `web-ext`, Yarn, and GitHub Actions
+- Add automated unit and Chrome/Firefox browser coverage for copy, cut, paste, frames, navigation, and activation state
 
 ### Changed
 - Support Firefox alongside Chrome with a Manifest V3 background-script fallback and Firefox-specific metadata
 - Resolve the Firefox extension API from the content-script global
+- Install event interception at document start so early page handlers cannot cancel clipboard events first
+- Make activation wait for stored rules and follow the originating tab across navigation and background restarts
+- Track active icons and titles independently for each tab and window
+- Validate regular-expression patterns while preserving invalid legacy entries for correction
 
 ## [3.1] - 2024-08-09
 ### Changed

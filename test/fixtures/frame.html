@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Framed clipboard blockers</title>
+    <script src="/blockers.js"></script>
+  </head>
+  <body>
+    <input
+      data-blocker="inline"
+      oncopy="return blockFromSite(event, 'inline')"
+      oncut="return blockFromSite(event, 'inline')"
+      onpaste="return blockFromSite(event, 'inline')"
+    >
+    <input data-blocker="listener">
+    <input data-blocker="property">
+    <input data-blocker="early-capture">
+  </body>
+</html>

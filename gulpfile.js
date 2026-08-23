@@ -43,6 +43,7 @@ function archive() {
     '!.idea{,/**}',
     '!.yarn{,/**}',
     '!web-ext-artifacts{,/**}',
+    '!test/.artifacts{,/**}',
     '!.pnp.*',
   ], { base: '.', dot: true })
     .pipe(zip('src.zip'))

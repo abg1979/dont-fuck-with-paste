@@ -30,6 +30,10 @@ input {
   width: 100%;
 }
 
+input:invalid {
+  border-color: #c00;
+}
+
 label {
   display: block;
 }

@@ -9,9 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const options = document.querySelector('.options');
   let rules = new Rules();
 
-  form.addEventListener('submit', event => {
+  form.addEventListener('submit', async event => {
     event.preventDefault();
-    storage.set({ rules: rules.serialize() });
+    await storage.set({ rules: rules.serialize() });
     window.close();
   });
 
@@ -28,14 +28,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     browser.tabs.query({ active: true, windowId: browser.windows.WINDOW_ID_CURRENT }, ([tab]) => {
       const addHandler = () => {
-        const rule = new Rule(new URL(tab.url).origin.replace(/\./g, '\\.'));
+        const rule = new Rule(Rule.escape(new URL(tab.url).origin));
         rules.add(rule);
         new RuleView(rule, rules).render(container, '#new');
       };
 
       add.addEventListener('click', addHandler);
 
-      const matching = rules.filter(rule => rule.test(tab.url));
+      const matching = rules.matching(tab.url);
       matching.forEach(rule => new RuleView(rule, rules).render(container, '#existing'));
 
       if (!matching.length) {
@@ -45,8 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const remove = document.querySelector('.delete');
       if (remove) {
         remove.addEventListener('click', () => {
-          storage.set({ rules: rules.serialize() });
-          window.close();
+          storage.set({ rules: rules.serialize() }).then(() => window.close());
         });
       }
     });

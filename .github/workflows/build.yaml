@@ -24,5 +24,21 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
+      - name: Install Chrome for Testing
+        id: chrome
+        uses: browser-actions/setup-chrome@v2
+        with:
+          chrome-version: stable
+          install-chromedriver: true
+
+      - name: Run unit tests
+        run: yarn test:unit
+
+      - name: Run Chrome and Firefox browser tests
+        run: yarn test:browser
+        env:
+          CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
+          DFWP_REQUIRE_BROWSERS: 1
+
       - name: Build distribution
         run: yarn build

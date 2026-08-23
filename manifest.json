@@ -12,7 +12,8 @@
     {
       "all_frames": true,
       "js": [ "content.js" ],
-      "matches": ["<all_urls>"]
+      "matches": ["<all_urls>"],
+      "run_at": "document_start"
     }
   ],
   "description": "Prevents the blocking of copying from & pasting into input fields",
