@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- Document the Chrome and Firefox add-on history and the independent AMO listing
+
 ## [3.1.2] - 2026-08-23
 ### Changed
 - Use an independent Firefox extension ID for the new AMO listing

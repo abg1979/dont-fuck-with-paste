@@ -2,6 +2,26 @@
 
 Don't F*** With Paste is a Firefox extension.
 
+## Project history
+
+This project continues the work of [Jacob Swanner's original Chrome
+extension](https://github.com/jswanner/DontF-WithPaste) and [Aaron R's Firefox
+port](https://github.com/aaronraimist/DontFuckWithPaste). The Firefox add-on
+remained at version 2.7 from 2020, while the Chrome project continued through
+version 3.1 in 2024. As Firefox and websites evolved, the older Firefox add-on
+no longer bypassed paste blocking reliably on some sites.
+
+This independently maintained Firefox continuation incorporates the newer
+Chrome changes and adds Firefox-specific reliability fixes, including
+interception before page handlers, correct activation during startup and
+navigation, per-tab state, iframe coverage, and automated Firefox browser
+tests.
+
+It is published as a separate Mozilla Add-ons listing because this project
+cannot update the older Firefox listing. Existing users of that listing will
+not be migrated automatically. Credit for the original extension and Firefox
+port remains with their respective authors.
+
 ## Background
 
 It annoys me to no end when a web application prevents me from being able to
