@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 No changes
 
+## [3.1] - 2024-08-09
+### Changed
+- Tweak styles
+
+## [3.0] - 2024-08-09
+### Changed
+- Upgrade to manifest v3
+
+## [2.9] - 2022-05-19
+### Changed
+- Extension's URL
+
+## [2.8] - 2022-05-13
+### Changed
+- Extension's name
+
 ## [2.7] - 2020-02-01
 ### Changed
 - Use runtime.openOptionsPage to open options page
@@ -53,13 +69,17 @@ No changes
 - This CHANGELOG file
 - Copy event blocking prevention
 
-[Unreleased]: https://github.com/jswanner/DontFuckWithPaste/compare/v2.7...HEAD
-[2.7]: https://github.com/jswanner/DontFuckWithPaste/compare/v2.6...v2.7
-[2.6]: https://github.com/jswanner/DontFuckWithPaste/compare/v2.5...v2.6
-[2.5]: https://github.com/jswanner/DontFuckWithPaste/compare/v2.4...v2.5
-[2.4]: https://github.com/jswanner/DontFuckWithPaste/compare/v2.3...v2.4
-[2.3]: https://github.com/jswanner/DontFuckWithPaste/compare/v2.2...v2.3
-[2.2]: https://github.com/jswanner/DontFuckWithPaste/compare/v2.1...v2.2
-[2.1]: https://github.com/jswanner/DontFuckWithPaste/compare/v2.0...v2.1
-[2.0]: https://github.com/jswanner/DontFuckWithPaste/compare/v1.1...v2.0
-[1.1]: https://github.com/jswanner/DontFuckWithPaste/compare/v1.0...v1.1
+[Unreleased]: https://github.com/jswanner/DontF-WithPaste/compare/v3.1...HEAD
+[3.1]: https://github.com/jswanner/DontF-WithPaste/compare/v3.0...v3.1
+[3.0]: https://github.com/jswanner/DontF-WithPaste/compare/v2.9...v3.0
+[2.9]: https://github.com/jswanner/DontF-WithPaste/compare/v2.8...v2.9
+[2.8]: https://github.com/jswanner/DontF-WithPaste/compare/v2.7...v2.8
+[2.7]: https://github.com/jswanner/DontF-WithPaste/compare/v2.6...v2.7
+[2.6]: https://github.com/jswanner/DontF-WithPaste/compare/v2.5...v2.6
+[2.5]: https://github.com/jswanner/DontF-WithPaste/compare/v2.4...v2.5
+[2.4]: https://github.com/jswanner/DontF-WithPaste/compare/v2.3...v2.4
+[2.3]: https://github.com/jswanner/DontF-WithPaste/compare/v2.2...v2.3
+[2.2]: https://github.com/jswanner/DontF-WithPaste/compare/v2.1...v2.2
+[2.1]: https://github.com/jswanner/DontF-WithPaste/compare/v2.0...v2.1
+[2.0]: https://github.com/jswanner/DontF-WithPaste/compare/v1.1...v2.0
+[1.1]: https://github.com/jswanner/DontF-WithPaste/compare/v1.0...v1.1

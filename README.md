@@ -1,6 +1,6 @@
-# Don't fuck with copy and paste
+# Don't f*** with copy and paste
 
-[![Don't Fuck With Paste - Chrome Web Store](https://developer.chrome.com/webstore/images/ChromeWebStore_Badge_v2_206x58.png)](https://chrome.google.com/webstore/detail/dont-fuck-with-paste/nkgllhigpcljnhoakjkgaieabnkmgdkb)
+[Don't F*** With Paste - Chrome Web Store](https://chromewebstore.google.com/detail/dont-f-with-paste/efaagigdgamehbpimpiagfpoihlkgamh)
 
 ## Background
 
@@ -13,22 +13,30 @@ paste into a text box.
 
 ## Solution
 
-This is a dead simple Google Chrome extension that removes copy and paste
-blocking.
+This is a dead simple Google Chrome extension that removes copy, cut and paste
+blocking, by preventing sites from interfering with "copy", "cut", and "paste"
+browser events.
+
+This extension does not try to prevent a site from also interfering with
+keyboard shortcuts related to those browser actions (control-v, command-v,
+etc.), nor does this extension prevent sites from interfering with the
+"contextmenu" event (right click menu). For those super annoying sites that
+interfere with keyboard shortcuts and context menu, using Edit -> Paste from
+the browser's menu might be required.
 
 ## Usage
 
-The easiest way to add a site to the blacklist is to click on the extension
-icon ![inactive
-icon](https://raw.githubusercontent.com/jswanner/DontFuckWithPaste/09339b4f43d5bac9ddbdeea75051c6d9c017951f/clipboard-inactive-32.png),
+The easiest way to activate the extension for a given site is to click on the
+extension icon ![inactive
+icon](https://raw.githubusercontent.com/jswanner/DontF-WithPaste/09339b4f43d5bac9ddbdeea75051c6d9c017951f/clipboard-inactive-32.png),
 then optionally edit the auto-generated pattern, lastly click "Save":
 
 ![New pattern dialog
-example](https://raw.githubusercontent.com/jswanner/DontFuckWithPaste/73e5d11eba02213ae28ac0ced28f54a1d1af6a09/dialog-example.png)
+example](https://raw.githubusercontent.com/jswanner/DontF-WithPaste/73e5d11eba02213ae28ac0ced28f54a1d1af6a09/dialog-example.png)
 
 After that, the extension icon should now be blue, meaning the extension is
 active for your current tab: ![active
-icon](https://raw.githubusercontent.com/jswanner/DontFuckWithPaste/73e5d11eba02213ae28ac0ced28f54a1d1af6a09/clipboard-active-32.png)
+icon](https://raw.githubusercontent.com/jswanner/DontF-WithPaste/73e5d11eba02213ae28ac0ced28f54a1d1af6a09/clipboard-active-32.png)
 
 ## Version 2 Upgrade
 
@@ -46,4 +54,25 @@ project, you can always read all the code to see how this extension works, and
 what it's [not] doing with your data.
 
 To read more about the version 2 upgrade, see: [the wiki
-page](https://github.com/jswanner/DontFuckWithPaste/wiki/Version-2.0).
+page](https://github.com/jswanner/DontF-WithPaste/wiki/Version-2.0).
+
+## Bookmarklet
+
+If for some reason you prefer to use a [bookmarklet][] to accomplish the same
+goal, you can do so by adding a bookmark to the following URI:
+
+```js
+javascript:forceBrowserDefault=(e=>{e.stopImmediatePropagation();return true;});['copy','cut','paste'].forEach(e=>document.addEventListener(e,forceBrowserDefault,true));
+```
+
+![bookmarklet](https://user-images.githubusercontent.com/576853/166342567-e7ed37ce-e2be-442b-a6b3-c5705f92ac9f.png)
+![chrome bookmarks](https://user-images.githubusercontent.com/261/167724011-7b9a3fa5-ad1d-44eb-86b9-d396edcb17bf.png)
+
+Now if you encounter a problematic page, you can click on this bookmark (or
+enter a keyword like `dfwp` into the address bar) in order to liberate your
+clipboard once more. Using this method can also help to mitigate
+[fingerprinting][], even if you are using Chrome. Note: this will not prevent
+blocking of clipboard events in iframes.
+
+[bookmarklet]: https://en.wikipedia.org/wiki/Bookmarklet
+[fingerprinting]: https://en.wikipedia.org/wiki/Device_fingerprint#Browser_extensions
