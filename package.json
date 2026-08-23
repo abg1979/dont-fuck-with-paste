@@ -1,6 +1,6 @@
 {
   "name": "dont-fuck-with-paste",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "private": true,
   "packageManager": "yarn@4.12.0",
   "description": "Firefox extension that prevents websites from blocking copy, cut, and paste events",
