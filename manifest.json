@@ -4,7 +4,8 @@
     "default_popup": "popup.html"
   },
   "background": {
-    "service_worker": "background.js" ,
+    "scripts": [ "background.js" ],
+    "service_worker": "background.js",
     "type": "module"
   },
   "content_scripts": [
@@ -30,9 +31,12 @@
     "tabs"
   ],
   "version": "3.1",
-  "applications": {
+  "browser_specific_settings": {
     "gecko": {
-      "id": "DontFuckWithPaste@raim.ist"
+      "id": "DontFuckWithPaste@raim.ist",
+      "data_collection_permissions": {
+        "required": [ "none" ]
+      }
     }
   }
 }

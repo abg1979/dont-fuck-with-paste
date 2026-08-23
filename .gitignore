@@ -1,4 +1,8 @@
 web-ext-artifacts/
+dist/
+node_modules/
+.yarn/
+.pnp.*
 package-lock.json
 
 # Created by https://www.gitignore.io/api/osx,linux,windows
@@ -130,3 +134,5 @@ typings/
 # dotenv environment variables file
 .env
 
+.idea
+*.iml

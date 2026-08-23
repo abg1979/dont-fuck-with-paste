@@ -1,0 +1,25 @@
+[env]
+# supports arbitrary env vars so mise can be used like direnv/dotenv
+PROJECT_NAME = "{{ config_root | basename }}"
+# add the node_modules/.bin to the path
+_.path = ['{{config_root}}/node_modules/.bin']
+
+[tools]
+node = "24"
+yarn = "4"
+
+[tasks.setup]
+description = "Setup the project"
+run = ['yarn install']
+
+[tasks.build]
+description = "Build the project"
+run = 'yarn build'
+
+[tasks.clean]
+description = "Clean generated artifacts"
+run = ['yarn clean']
+
+[tasks.lint]
+description = "Validate the extension"
+run = ['yarn lint']

@@ -1,0 +1,33 @@
+module.exports = {
+  sourceDir: '.',
+  artifactsDir: 'dist',
+  ignoreFiles: [
+    '.git/**',
+    '.github/**',
+    '.idea/**',
+    '.yarn/**',
+    'dist/**',
+    'node_modules/**',
+    'test',
+    'test/**',
+    'web-ext-artifacts/**',
+    '*.iml',
+    'CHANGELOG.md',
+    'dialog-example.png',
+    'gulpfile.js',
+    'LICENSE.md',
+    'mise.toml',
+    'package.json',
+    'README.md',
+    'web-ext-config.cjs',
+    'yarn.lock',
+  ],
+  build: {
+    overwriteDest: true,
+    filename: '{name}-{version}.xpi',
+  },
+  run: {
+    firefox: 'firefox',
+    browserConsole: true,
+  },
+};

@@ -1,9 +1,9 @@
 let runtime;
 
 try {
-  runtime = window.browser.runtime;
+  runtime = browser.runtime;
 } catch {
-  runtime = window.chrome.runtime;
+  runtime = chrome.runtime;
 }
 
 const forceBrowserDefault = function(e){

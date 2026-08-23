@@ -3,7 +3,12 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
-No changes
+### Added
+- Add reproducible Firefox linting and distribution builds with Gulp, `web-ext`, Yarn, and GitHub Actions
+
+### Changed
+- Support Firefox alongside Chrome with a Manifest V3 background-script fallback and Firefox-specific metadata
+- Resolve the Firefox extension API from the content-script global
 
 ## [3.1] - 2024-08-09
 ### Changed
