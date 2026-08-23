@@ -6,6 +6,8 @@ module.exports = {
     '.github/**',
     '.idea/**',
     '.yarn/**',
+    'artwork',
+    'artwork/**',
     'dist/**',
     'node_modules/**',
     'test',

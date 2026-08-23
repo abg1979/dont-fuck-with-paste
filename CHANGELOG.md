@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Document the Chrome and Firefox add-on history and the independent AMO listing
+- Add new active and inactive clipboard icons with editable SVG artwork
 
 ## [3.1.2] - 2026-08-23
 ### Changed
